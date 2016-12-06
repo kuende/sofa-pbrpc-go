@@ -88,6 +88,7 @@ func (t *TCPTransport) RequestResponse(ctx context.Context, method string, req, 
 		return err
 	}
 
+	defer t.unregisterRequestID(meta)
 	respChan, err := t.sendRequest(meta, req)
 
 	if err != nil {
@@ -116,12 +117,10 @@ func (t *TCPTransport) sendRequest(meta *protocol.RpcMeta, req proto.Message) (c
 	bytesCount, err := t.socket.Write(request)
 
 	if err != nil {
-		t.unregisterRequestID(meta)
 		return nil, err
 	}
 
 	if bytesCount != len(request) {
-		t.unregisterRequestID(meta)
 		return nil, fmt.Errorf("Expected to send %d bytes, %d sent", len(request), bytesCount)
 	}
 
@@ -240,10 +239,11 @@ func (t *TCPTransport) getResponseChan(meta *protocol.RpcMeta) (chan []byte, err
 	return ch, nil
 }
 
-func (t *TCPTransport) unregisterRequestID(meta *protocol.RpcMeta) error {
+func (t *TCPTransport) unregisterRequestID(meta *protocol.RpcMeta) {
 	sequenceID := meta.SequenceId
 	if sequenceID == nil {
-		return errors.New("sequenceID cannot be nil")
+		t.Logger.Errorf("sequenceID cannot be nil")
+		return
 	}
 
 	t.inFlightMtx.Lock()
@@ -251,12 +251,11 @@ func (t *TCPTransport) unregisterRequestID(meta *protocol.RpcMeta) error {
 
 	_, found := t.inFlightRequests[*sequenceID]
 	if !found {
-		return errors.New("sequenceID not found")
+		t.Logger.Errorf("sequendeID %d not found", *sequenceID)
+		return
 	}
 
 	delete(t.inFlightRequests, *sequenceID)
-
-	return nil
 }
 
 func (t *TCPTransport) awaitResponse(ch chan []byte, resp proto.Message) error {
