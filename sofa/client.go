@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/pkg/errors"
 )
 
 // Conn defines a sofa pbrpc client
@@ -18,12 +17,7 @@ type ClientConn struct {
 }
 
 // NewClient returns a new sofa-pbrpc client
-func NewClient(addresses []string) (Conn, error) {
-	transport, err := NewTCPTransport(addresses)
-	if err != nil {
-		return nil, errors.Wrap(err, "failed to create TCP transport")
-	}
-
+func NewClient(transport Transport) (Conn, error) {
 	client := &ClientConn{
 		transport: transport,
 	}
