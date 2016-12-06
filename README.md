@@ -11,13 +11,13 @@ See example directory for a complete example implementing Go client for [example
 ### TODO
 
 - [x] basic request/response with timeout
-- [ ] HTTP/JSON transport
+- [X] HTTP/JSON transport
 - [ ] SeedProvider for TCP / HTTP transports
-- [ ] RPC server
+- [ ] return error codes to caller
 - [ ] load balancing
 - [ ] fault tolerance + backoff
-- [ ] return error codes to caller
 - [ ] implement better timeout control
 - [ ] implement compression
 - [ ] implement test mocking interface
+- [ ] RPC server
 - [ ] tests, tests, tests
