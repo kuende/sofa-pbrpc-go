@@ -1,6 +1,6 @@
 syntax = "proto2";
 
-package main;
+package sofa.pbrpc.test;
 
 option cc_generic_services = true;
 option java_generic_services = true;

@@ -1,4 +1,4 @@
-package main
+package sofa_pbrpc_test
 
 import (
 	"context"

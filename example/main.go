@@ -8,6 +8,8 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/kuende/sofa-pbrpc-go/sofa"
+
+	echo "github.com/kuende/sofa-pbrpc-go/example/generated/sofa_pbrpc_test"
 )
 
 var (
@@ -33,8 +35,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	client := NewEchoServerClient(clientConn)
-	response, err := client.Echo(context.Background(), &EchoRequest{Message: proto.String(message)})
+	client := echo.NewEchoServerClient(clientConn)
+	response, err := client.Echo(context.Background(), &echo.EchoRequest{Message: proto.String(message)})
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to send rpc: %v\n", err)
 		os.Exit(1)
