@@ -15,11 +15,7 @@ import (
 )
 
 var (
-	// ErrTimeoutExceeded is returned if no response is returned before timeout
-	ErrTimeoutExceeded = errors.New("RPC timeout exceeded")
-
-	magicString    = "SOFA"
-	defaultTimeout = 3 * time.Second
+	magicString = "SOFA"
 )
 
 // TCPTransport implements Sofa pbrpc over TCP

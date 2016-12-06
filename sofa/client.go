@@ -17,12 +17,12 @@ type ClientConn struct {
 }
 
 // NewClient returns a new sofa-pbrpc client
-func NewClient(transport Transport) (Conn, error) {
+func NewClient(transport Transport) Conn {
 	client := &ClientConn{
 		transport: transport,
 	}
 
-	return client, nil
+	return client
 }
 
 // RequestResponse sends request and awaits response
