@@ -20,3 +20,4 @@ See example directory for a complete example implementing Go client for [example
 - [ ] implement better timeout control
 - [ ] implement compression
 - [ ] implement test mocking interface
+- [ ] tests, tests, tests
