@@ -34,3 +34,4 @@ _testmain.go
 /test.db
 
 /example/bin
+/protoc-gen-gosofa/bin

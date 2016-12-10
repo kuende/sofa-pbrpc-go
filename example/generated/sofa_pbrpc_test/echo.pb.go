@@ -18,6 +18,11 @@ import proto "github.com/gogo/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import (
+	context "context"
+	sofa "github.com/kuende/sofa-pbrpc-go/sofa"
+)
+
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal
 var _ = fmt.Errorf
@@ -66,6 +71,37 @@ func (m *EchoResponse) GetMessage() string {
 func init() {
 	proto.RegisterType((*EchoRequest)(nil), "sofa.pbrpc.test.EchoRequest")
 	proto.RegisterType((*EchoResponse)(nil), "sofa.pbrpc.test.EchoResponse")
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ sofa.Conn
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the sofa-pbrpc package it is being compiled against.
+const _ = sofa.SupportPackageIsVersion1
+
+// Client API for EchoServer service
+
+type EchoServerClient interface {
+	Echo(ctx context.Context, in *EchoRequest, opts ...sofa.CallOption) (*EchoResponse, error)
+}
+
+type echoServerClient struct {
+	cc sofa.Conn
+}
+
+func NewEchoServerClient(cc sofa.Conn) EchoServerClient {
+	return &echoServerClient{cc}
+}
+
+func (c *echoServerClient) Echo(ctx context.Context, in *EchoRequest, opts ...sofa.CallOption) (*EchoResponse, error) {
+	out := new(EchoResponse)
+	err := sofa.Invoke(ctx, "sofa.pbrpc.test.EchoServer.Echo", in, out, c.cc, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func init() { proto.RegisterFile("echo.proto", fileDescriptorEcho) }
