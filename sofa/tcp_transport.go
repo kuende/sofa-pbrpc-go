@@ -15,7 +15,9 @@ import (
 )
 
 var (
-	magicString = "SOFA"
+	// TCPTransportType defines type of tcp transport
+	TCPTransportType = "tcp"
+	magicString      = "SOFA"
 )
 
 // TCPTransport implements Sofa pbrpc over TCP

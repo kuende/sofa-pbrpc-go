@@ -11,6 +11,11 @@ import (
 	"github.com/pkg/errors"
 )
 
+var (
+	// HTTPTransportType defines type of http transport
+	HTTPTransportType = "http"
+)
+
 // HTTPTransport implements Sofa pbrpc over HTTP
 type HTTPTransport struct {
 	endpoint   string

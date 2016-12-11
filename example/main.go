@@ -8,6 +8,7 @@ import (
 
 	"github.com/gogo/protobuf/proto"
 	"github.com/kuende/sofa-pbrpc-go/sofa"
+	"github.com/kuende/sofa-pbrpc-go/sofa/discovery"
 
 	echo "github.com/kuende/sofa-pbrpc-go/example/generated/sofa_pbrpc_test"
 )
@@ -18,13 +19,16 @@ var (
 )
 
 func sofaRPC() {
-	transport, err := sofa.NewTCPTransport([]string{serverAddr}, nil)
+	clientConn, err := sofa.NewClient(sofa.ClientOpts{
+		TransportType:     sofa.TCPTransportType,
+		DiscoveryProvider: discovery.NewStaticProvider([]string{serverAddr}),
+	})
+
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to initialize transport: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to create client: %v\n", err)
 		os.Exit(1)
 	}
 
-	clientConn := sofa.NewClient(transport)
 	client := echo.NewEchoServerClient(clientConn)
 
 	response, err := client.Echo(context.Background(), &echo.EchoRequest{Message: proto.String(message)})
@@ -37,8 +41,15 @@ func sofaRPC() {
 }
 
 func httpRPC() {
-	transport, _ := sofa.NewHTTPTransport(serverAddr)
-	clientConn := sofa.NewClient(transport)
+	clientConn, err := sofa.NewClient(sofa.ClientOpts{
+		TransportType:     sofa.HTTPTransportType,
+		DiscoveryProvider: discovery.NewStaticProvider([]string{serverAddr}),
+	})
+
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to create client: %v\n", err)
+		os.Exit(1)
+	}
 	client := echo.NewEchoServerClient(clientConn)
 
 	response, err := client.Echo(context.Background(), &echo.EchoRequest{Message: proto.String(message)})
