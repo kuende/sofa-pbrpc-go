@@ -27,7 +27,7 @@ $ protoc -I . *.proto --gosofa_out=plugins=sofa:generated/sofa_pbrpc_test
 - [x] basic request/response with timeout
 - [X] HTTP/JSON transport
 - [x] code generation tool
-- [ ] SeedProvider for TCP / HTTP transports
+- [x] SeedProvider for TCP / HTTP transports
 - [ ] return error codes to caller
 - [ ] load balancing
 - [ ] fault tolerance + backoff
